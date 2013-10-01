@@ -351,9 +351,22 @@
     <Content Include="Areas\UserApplications\Content\UserApplications.less" />
     <Content Include="Areas\UserApplications\Views\Shared\Nav.cshtml" />
     <Content Include="Areas\Admin\Views\Key\X509Key.cshtml" />
+    <Content Include="Configuration\autofac-prod.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\identityModel-prod.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\identityModel.services-prod.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Content\Site.less" />
-    <Content Include="Configuration\identityModel.config" />
-    <Content Include="Configuration\identityModel.services.config" />
+    <Content Include="Configuration\identityModel.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\identityModel.services.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configuration\tracing.config">
       <SubType>Designer</SubType>
     </Content>
@@ -365,6 +378,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Local Release.pubxml" />
+    <None Include="Properties\PublishProfiles\TestServer.pubxml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -410,7 +424,9 @@
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
