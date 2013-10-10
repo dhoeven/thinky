@@ -27,7 +27,7 @@ namespace Thinktecture.AuthorizationServer.WebHost
             var claims = new List<Claim> { new Claim(Constants.ClaimTypes.Subject, subject) };
 
             claims.AddRange(AddInternalClaims(subject));
-
+            claims.AddRange(incomingPrincipal.Claims.Where(claim => claim.OriginalIssuer == "SMIID"));
             return Principal.Create("AuthorizationServer", claims.ToArray());
         }
 
