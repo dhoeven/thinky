@@ -150,6 +150,9 @@ namespace Thinktecture.AuthorizationServer.OAuth2
 
             ValidateScopes(request, validatedRequest);
 
+            //TODO:  check that the identity really has access to this context
+            validatedRequest.context = request.context;
+
             // TODO: fix based upon past "remember me" settings
             validatedRequest.ShowConsent = client.RequireConsent || application.RequireConsent;
 

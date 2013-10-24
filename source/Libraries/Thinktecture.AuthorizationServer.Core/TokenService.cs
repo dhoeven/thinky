@@ -161,6 +161,10 @@ namespace Thinktecture.AuthorizationServer
             };
 
             request.Scopes.ForEach(s => claims.Add(new Claim("scope", s.Name)));
+            if (request.context != null)
+            {
+                claims.Add(new Claim("context", request.context));
+            }
 
             return claims;
         }
