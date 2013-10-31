@@ -20,11 +20,13 @@ namespace Thinktecture.AuthorizationServer.OAuth2
     {
         IStoredGrantManager _handleManager;
         IAuthorizationServerConfiguration _config;
+        ISmiIdentity _identityConfig;
 
-        public AuthorizeController(IStoredGrantManager handleManager, IAuthorizationServerConfiguration config)
+        public AuthorizeController(IStoredGrantManager handleManager, IAuthorizationServerConfiguration config, ISmiIdentity identityConfig)
         {
             _handleManager = handleManager;
             _config = config;
+            _identityConfig = identityConfig;
         }
 
         // GET /{appName}/oauth/authorize
@@ -40,11 +42,12 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 Tracing.Error("Application not found: " + appName);
                 return HttpNotFound();
             }
+            var memberships = _identityConfig.FindIdentityMemberships(ClaimsPrincipal.Current.GetSubject());
 
             ValidatedRequest validatedRequest;
             try
             {
-                validatedRequest = new AuthorizeRequestValidator().Validate(application, request);
+                validatedRequest = new AuthorizeRequestValidator().Validate(application, memberships, request);
             }
             catch (AuthorizeRequestValidationException ex)
             {
@@ -94,6 +97,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 Tracing.Error("Application not found: " + appName);
                 return HttpNotFound();
             }
+            var memberships = _identityConfig.FindIdentityMemberships(ClaimsPrincipal.Current.GetSubject());
 
             if (button == "no")
             {
@@ -108,7 +112,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 ValidatedRequest validatedRequest;
                 try
                 {
-                    validatedRequest = new AuthorizeRequestValidator().Validate(application, request);
+                    validatedRequest = new AuthorizeRequestValidator().Validate(application, memberships, request);
                 }
                 catch (AuthorizeRequestValidationException ex)
                 {

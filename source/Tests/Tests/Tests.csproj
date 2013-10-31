@@ -72,7 +72,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Authorize Request Validation\AuthorizeRequest_Validation_Code.cs" />
+    <Compile Include="Authorize Request Validation\AuthorizeRequest_Validation_Context.cs" />
     <Compile Include="Authorize Request Validation\AuthorizeRequest_Validation_Token.cs" />
+    <Compile Include="Data\TestSmiIdentityConfiguration.cs" />
     <Compile Include="Data\TestTokenHandleManager.cs" />
     <Compile Include="Authorize Request Validation\AuthorizeRequest_Validation_General.cs" />
     <Compile Include="Data\TestAuthorizationServerConfiguration.cs" />

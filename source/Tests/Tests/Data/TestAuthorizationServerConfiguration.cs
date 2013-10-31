@@ -142,6 +142,22 @@ namespace Thinktecture.AuthorizationServer.Test
                 Emphasize = true
             };
 
+            var needsScope = new Scope
+            {
+                AllowedClients = new List<Client> { codeClient, implicitClient, resourceOwnerClient },
+                Name = "needs",
+                Description = "needs",
+                Emphasize = false
+            };
+
+            var membershipScope = new Scope
+            {
+                AllowedClients = new List<Client> { codeClient, implicitClient, resourceOwnerClient },
+                Name = "membership",
+                Description = "membership",
+                Emphasize = false
+            };
+
             var deleteScope = new Scope
             {
                 AllowedClients = new List<Client> { trustedClient },
@@ -154,7 +170,7 @@ namespace Thinktecture.AuthorizationServer.Test
             {
                 Name = "Test Application",
                 Namespace = "test",
-                Scopes = new List<Scope> { readScope, browseScope, searchScope, writeScope, deleteScope },
+                Scopes = new List<Scope> { readScope, browseScope, searchScope, writeScope, deleteScope, needsScope, membershipScope },
                 RequireConsent = true,
                 TokenLifetime = 60
             };

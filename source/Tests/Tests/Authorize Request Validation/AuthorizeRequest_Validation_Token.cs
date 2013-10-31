@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Thinktecture.AuthorizationServer.Interfaces;
+using Thinktecture.AuthorizationServer.Models;
 using Thinktecture.AuthorizationServer.OAuth2;
 
 namespace Thinktecture.AuthorizationServer.Test
@@ -30,7 +32,7 @@ namespace Thinktecture.AuthorizationServer.Test
                 redirect_uri = "https://test2.local"
             };
 
-            var result = validator.Validate(app, request);
+            var result = validator.Validate(app, new List<IdentityMembership>(), request);
         }
 
         [TestMethod]
@@ -46,7 +48,7 @@ namespace Thinktecture.AuthorizationServer.Test
                 redirect_uri = "https://test2.local"
             };
 
-            var result = validator.Validate(app, request);
+            var result = validator.Validate(app, new List<IdentityMembership>(), request);
         }
 
         [TestMethod]
@@ -64,7 +66,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -90,7 +92,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {
@@ -118,7 +120,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {
@@ -144,7 +146,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {

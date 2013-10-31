@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Web.Mvc;
+using Tests.Data;
 using Thinktecture.AuthorizationServer.Interfaces;
+using Thinktecture.AuthorizationServer.Models;
 using Thinktecture.AuthorizationServer.OAuth2;
 
 namespace Thinktecture.AuthorizationServer.Test
@@ -9,6 +12,7 @@ namespace Thinktecture.AuthorizationServer.Test
     public class AuthorizeRequest_Validation_General
     {
         IAuthorizationServerConfiguration _testConfig;
+        TestSmiIdentityConfiguration _testSmi;
 
         [TestInitialize]
         public void Init()
@@ -16,12 +20,13 @@ namespace Thinktecture.AuthorizationServer.Test
             DataProtectection.Instance = new NoProtection();
 
             _testConfig = new TestAuthorizationServerConfiguration();
+            _testSmi = new TestSmiIdentityConfiguration();
         }
 
         [TestMethod]
         public void UnknownApplication()
         {
-            var controller = new AuthorizeController(null, _testConfig);
+            var controller = new AuthorizeController(null, _testConfig, _testSmi);
             var result = controller.Index("unknown", null);
 
             Assert.IsTrue(result is HttpNotFoundResult);
@@ -35,7 +40,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, null);
+                var result = validator.Validate(app, new List<IdentityMembership>(), null);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -60,7 +65,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -86,7 +91,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -112,7 +117,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -137,7 +142,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {
@@ -163,7 +168,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {
@@ -188,7 +193,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -214,7 +219,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestResourceOwnerException ex)
             {
@@ -239,7 +244,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {
@@ -265,7 +270,7 @@ namespace Thinktecture.AuthorizationServer.Test
 
             try
             {
-                var result = validator.Validate(app, request);
+                var result = validator.Validate(app, new List<IdentityMembership>(), request);
             }
             catch (AuthorizeRequestClientException ex)
             {

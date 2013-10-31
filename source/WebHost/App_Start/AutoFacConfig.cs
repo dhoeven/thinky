@@ -3,6 +3,7 @@
  * see license.txt
  */
 
+using System.Data.Entity;
 using Autofac;
 using Autofac.Configuration;
 using Autofac.Integration.Mvc;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 using Thinktecture.AuthorizationServer.EF;
 using Thinktecture.AuthorizationServer.Interfaces;
 using Thinktecture.AuthorizationServer.OAuth2;
+using SMI.Identity.EF;
 
 namespace Thinktecture.AuthorizationServer.WebHost
 {
@@ -29,6 +31,9 @@ namespace Thinktecture.AuthorizationServer.WebHost
             builder.RegisterType<EFAuthorizationServerAdministration>().As<IAuthorizationServerAdministration>();
             builder.RegisterType<EFAuthorizationServerAdministratorsService>().As<IAuthorizationServerAdministratorsService>();
             builder.RegisterType<AuthorizationServerContext>().InstancePerHttpRequest();
+            builder.RegisterType<SmiContext>().InstancePerHttpRequest();
+            builder.RegisterType<SmiIdentity>().As<ISmiIdentity>();
+            Database.SetInitializer<SmiContext>(null);
             
             builder.RegisterModule(new ConfigurationSettingsReader("autofac"));
 

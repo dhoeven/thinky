@@ -12,7 +12,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
 {
     public class AuthorizeRequestValidator
     {
-        public ValidatedRequest Validate(Application application, AuthorizeRequest request)
+        public ValidatedRequest Validate(Application application, List<IdentityMembership> memberships, AuthorizeRequest request)
         {
             // If the request fails due to a missing, invalid, or mismatching
             // redirection URI, or if the client identifier is missing or invalid,
@@ -148,7 +148,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                     validatedRequest.State);
             }
 
-            ValidateScopes(request, validatedRequest);
+            ValidateScopes(request, validatedRequest, memberships.FirstOrDefault(m => m.MembershipID.ToString() == request.context));
 
             //TODO:  check that the identity really has access to this context
             validatedRequest.context = request.context;
@@ -200,7 +200,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
         }
 
-        private static void ValidateScopes(AuthorizeRequest request, ValidatedRequest validatedRequest)
+        private static void ValidateScopes(AuthorizeRequest request, ValidatedRequest validatedRequest, IdentityMembership membership)
         {
             // validate scopes
             if (string.IsNullOrEmpty(request.scope))
@@ -218,6 +218,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
 
             if (validatedRequest.Application.Scopes.TryValidateScopes(validatedRequest.Client.ClientId, requestedScopes, out resultingScopes))
             {
+                resultingScopes = ValidateScopesForContext(request.context, membership, resultingScopes);
                 validatedRequest.Scopes = resultingScopes;
                 Tracing.InformationFormat("Requested scopes: {0}", request.scope);
             }
@@ -229,6 +230,29 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                     OAuthConstants.Errors.InvalidScope,
                     validatedRequest.ResponseType,
                     validatedRequest.State);
+            }
+        }
+
+        private static List<Scope> ValidateScopesForContext(string context, IdentityMembership membership, List<Scope> resultingScopes)
+        {
+            if (membership == null || !membership.CanAccessNeeds)
+            {
+                RemoveScope(resultingScopes, "needs");
+            }
+            if (membership == null || !membership.CanAccessMembership)
+            {
+                RemoveScope(resultingScopes, "membership");
+            }
+            return resultingScopes;
+        }
+
+        private static void RemoveScope(List<Scope> resultingScopes, string scopeName)
+        {
+            var needsScope = resultingScopes.FirstOrDefault(s => s.Name.Contains(scopeName));
+            while (needsScope != null)
+            {
+                resultingScopes.Remove(needsScope);
+                needsScope = resultingScopes.FirstOrDefault(s => s.Name.Contains(scopeName));
             }
         }
     }

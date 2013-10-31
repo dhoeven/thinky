@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests\Tests.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thinktecture.AuthorizationServer.EF", "Thinktecture.AuthorizationServer.EF\Thinktecture.AuthorizationServer.EF.csproj", "{8D40FCEB-B25A-4EC3-81CC-201F7BBF41CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMI.Identity.EF", "SMI.Identity.EF\SMI.Identity.EF.csproj", "{9B75D683-04AF-4593-A635-15803351E66A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{8D40FCEB-B25A-4EC3-81CC-201F7BBF41CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D40FCEB-B25A-4EC3-81CC-201F7BBF41CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D40FCEB-B25A-4EC3-81CC-201F7BBF41CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B75D683-04AF-4593-A635-15803351E66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B75D683-04AF-4593-A635-15803351E66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B75D683-04AF-4593-A635-15803351E66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B75D683-04AF-4593-A635-15803351E66A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

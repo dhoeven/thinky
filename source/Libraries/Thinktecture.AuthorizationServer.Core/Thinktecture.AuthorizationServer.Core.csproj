@@ -68,6 +68,7 @@
     <Compile Include="Interfaces\IAuthorizationServerConfiguration.cs" />
     <Compile Include="Interfaces\IResourceOwnerCredentialValidation.cs" />
     <Compile Include="DataProtectection\IDataProtectection.cs" />
+    <Compile Include="Interfaces\ISmiIdentity.cs" />
     <Compile Include="Interfaces\IStoredGrantManager.cs" />
     <Compile Include="Extensions\ScopeExtensions.cs" />
     <Compile Include="Extensions\RedirectUriExtensions.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Models\ClientAuthenticationMethod.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Models\GlobalConfiguration.cs" />
+    <Compile Include="Models\IdentityMembership.cs" />
     <Compile Include="Models\SigningKey.cs" />
     <Compile Include="Models\StoredGrant.cs" />
     <Compile Include="Models\OAuth2Flow.cs" />
