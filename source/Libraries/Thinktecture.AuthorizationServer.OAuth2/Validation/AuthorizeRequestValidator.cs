@@ -148,10 +148,9 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                     validatedRequest.State);
             }
 
-            ValidateScopes(request, validatedRequest, memberships.FirstOrDefault(m => m.MembershipID.ToString() == request.context));
-
-            //TODO:  check that the identity really has access to this context
-            validatedRequest.context = request.context;
+            validatedRequest.context = MembershipContext(memberships, request.context);
+          //  validatedRequest.context = request.context;
+            ValidateScopes(request, validatedRequest, memberships.FirstOrDefault(m => m.MembershipID.ToString() == validatedRequest.context));
 
             // TODO: fix based upon past "remember me" settings
             validatedRequest.ShowConsent = client.RequireConsent || application.RequireConsent;
@@ -160,7 +159,25 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             return validatedRequest;
         }
 
-        
+        private static string MembershipContext(List<IdentityMembership> memberships, string context)
+        {
+            if (string.IsNullOrEmpty(context))
+            {
+                var firstOrDefault = memberships.FirstOrDefault(m => m.IsPrimaryMember);
+                if (firstOrDefault != null)
+                    context = firstOrDefault.MembershipID.ToString();
+            }
+
+            if (string.IsNullOrEmpty(context))
+            {
+                var identityMembership = memberships.FirstOrDefault();
+                if (identityMembership != null)
+                    context = identityMembership.MembershipID.ToString();
+            }
+            return context;
+        }
+
+
         private void ValidateTokenResponseType(ValidatedRequest validatedRequest, AuthorizeRequest request)
         {
             if (validatedRequest.Client.Flow != OAuthFlow.Implicit)

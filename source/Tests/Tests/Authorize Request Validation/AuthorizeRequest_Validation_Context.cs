@@ -55,7 +55,6 @@ namespace Thinktecture.AuthorizationServer.Test
                 redirect_uri = "https://test2.local",
                 context = "11234"
             };
-            var memberships = new List<IdentityMembership>();
 
             var result = validator.Validate(app, new List<IdentityMembership>(), request);
             Assert.AreEqual("11234", result.context);
@@ -80,6 +79,50 @@ namespace Thinktecture.AuthorizationServer.Test
             var result = validator.Validate(app, new List<IdentityMembership>(), request);
             Assert.AreEqual("11234", result.context);
             Assert.AreEqual(0, result.Scopes.Count);
+        }
+
+        [TestMethod]
+        public void UsesContextThatIsPrimaryIfNoneInRequest()
+        {
+            var validator = new AuthorizeRequestValidator();
+            var app = _testConfig.FindApplication("test");
+            var request = new AuthorizeRequest
+            {
+                client_id = "implicitclient",
+                response_type = "token",
+                scope = "membership",
+                redirect_uri = "https://test2.local",
+                context = ""
+            };
+
+            var memberships = new List<IdentityMembership>();
+            memberships.Add( new IdentityMembership() {CanAccessNeeds = true, MembershipID = 11234});
+            memberships.Add( new IdentityMembership(){IsPrimaryMember = true, MembershipID = 6578});
+
+            var result = validator.Validate(app, memberships, request);
+            Assert.AreEqual("6578", result.context);
+        }
+
+        [TestMethod]
+        public void UsesContextFromFirstMembership()
+        {
+            var validator = new AuthorizeRequestValidator();
+            var app = _testConfig.FindApplication("test");
+            var request = new AuthorizeRequest
+            {
+                client_id = "implicitclient",
+                response_type = "token",
+                scope = "membership",
+                redirect_uri = "https://test2.local",
+                context = ""
+            };
+
+            var memberships = new List<IdentityMembership>();
+            memberships.Add( new IdentityMembership() {IsPrimaryMember = false, MembershipID = 11234});
+            memberships.Add( new IdentityMembership(){IsPrimaryMember = false, MembershipID = 6578});
+
+            var result = validator.Validate(app, memberships, request);
+            Assert.AreEqual("11234", result.context);
         }
     }
 }
