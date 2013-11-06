@@ -149,8 +149,8 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
 
             validatedRequest.context = MembershipContext(memberships, request.context);
-          //  validatedRequest.context = request.context;
             ValidateScopes(request, validatedRequest, memberships.FirstOrDefault(m => m.MembershipID.ToString() == validatedRequest.context));
+            validatedRequest.HasClaimedMembership = memberships.Any(m => m.IsPrimaryMember);
 
             // TODO: fix based upon past "remember me" settings
             validatedRequest.ShowConsent = client.RequireConsent || application.RequireConsent;
@@ -235,7 +235,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
 
             if (validatedRequest.Application.Scopes.TryValidateScopes(validatedRequest.Client.ClientId, requestedScopes, out resultingScopes))
             {
-                resultingScopes = ValidateScopesForContext(request.context, membership, resultingScopes);
+                resultingScopes = ValidateScopesForContext(membership, resultingScopes);
                 validatedRequest.Scopes = resultingScopes;
                 Tracing.InformationFormat("Requested scopes: {0}", request.scope);
             }
@@ -250,7 +250,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
         }
 
-        private static List<Scope> ValidateScopesForContext(string context, IdentityMembership membership, List<Scope> resultingScopes)
+        private static List<Scope> ValidateScopesForContext(IdentityMembership membership, List<Scope> resultingScopes)
         {
             if (membership == null || !membership.CanAccessNeeds)
             {

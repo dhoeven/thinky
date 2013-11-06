@@ -27,5 +27,6 @@ namespace Thinktecture.AuthorizationServer.Models
         public bool ShowConsent { get; set; }
         public bool ShowRememberConsent { get; set; }
         public string context { get; set; }
+        public bool HasClaimedMembership;
     }
 }

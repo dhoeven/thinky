@@ -166,6 +166,10 @@ namespace Thinktecture.AuthorizationServer
                 claims.Add(new Claim("context", request.context));
             }
 
+            claims.Add(new Claim("has_claimed_membership", request.HasClaimedMembership
+                                                               ? "True"
+                                                               : "False", ClaimValueTypes.Boolean));
+
             return claims;
         }
     }

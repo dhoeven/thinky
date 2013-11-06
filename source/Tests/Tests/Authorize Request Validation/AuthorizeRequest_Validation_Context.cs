@@ -123,6 +123,28 @@ namespace Thinktecture.AuthorizationServer.Test
 
             var result = validator.Validate(app, memberships, request);
             Assert.AreEqual("11234", result.context);
+            Assert.IsFalse(result.HasClaimedMembership);
+        }
+
+        [TestMethod]
+        public void HasAPrimaryMembershipClaim()
+        {
+            var validator = new AuthorizeRequestValidator();
+            var app = _testConfig.FindApplication("test");
+            var request = new AuthorizeRequest
+            {
+                client_id = "implicitclient",
+                response_type = "token",
+                scope = "membership",
+                redirect_uri = "https://test2.local",
+                context = ""
+            };
+
+            var memberships = new List<IdentityMembership>();
+            memberships.Add( new IdentityMembership() {IsPrimaryMember = true, MembershipID = 11234});
+
+            var result = validator.Validate(app, memberships, request);
+            Assert.IsTrue(result.HasClaimedMembership);
         }
     }
 }
