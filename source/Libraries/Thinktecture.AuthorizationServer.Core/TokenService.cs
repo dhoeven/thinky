@@ -167,8 +167,8 @@ namespace Thinktecture.AuthorizationServer
             }
 
             claims.Add(new Claim("has_claimed_membership", request.HasClaimedMembership
-                                                               ? "True"
-                                                               : "False", ClaimValueTypes.Boolean));
+                                                               ? true.ToString()
+                                                               : false.ToString(), ClaimValueTypes.Boolean));
 
             return claims;
         }
