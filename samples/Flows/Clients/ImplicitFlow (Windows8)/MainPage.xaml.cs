@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Thinktecture.IdentityModel.WinRT;
 using Thinktecture.Samples;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Security.Credentials;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -30,7 +22,8 @@ namespace ImplicitClientWindows8
         string _resourceName = "backend";
         TokenCredential _credential;
 
-        static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        //static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        static Uri _baseAddress = new Uri(Constants.WebHostv2BaseAddress);
 
         public MainPage()
         {
@@ -62,7 +55,7 @@ namespace ImplicitClientWindows8
                     clientId: Constants.Clients.ImplicitClient,
                     scope: "read");
 
-                TokenVault.StoreToken(_resourceName, response);
+                TokenVault.StoreToken(_resourceName, response.AccessToken, response.ExpiresIn, response.TokenType);
                 RetrieveStoredToken();
 
             }
@@ -97,7 +90,7 @@ namespace ImplicitClientWindows8
                 await md.ShowAsync();
                 return;
             }
-
+            
             var claims = await response.Content.ReadAsAsync<IEnumerable<ViewClaim>>();
 
             foreach (var claim in claims)

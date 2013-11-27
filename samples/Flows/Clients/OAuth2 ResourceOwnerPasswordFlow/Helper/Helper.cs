@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Thinktecture.IdentityModel.Extensions;
 
 namespace Thinktecture.Samples
 {
@@ -30,11 +27,5 @@ namespace Thinktecture.Samples
                 string.Format("  {0}\n", c.Value).ConsoleGreen();
             });
         }    
-    }
-    
-    public class ViewClaim
-    {
-        public string Type { get; set; }
-        public string Value { get; set; }
     }
 }

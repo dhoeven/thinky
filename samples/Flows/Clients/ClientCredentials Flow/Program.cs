@@ -1,29 +1,24 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Thinktecture.IdentityModel.Clients;
-using Thinktecture.IdentityModel.Constants;
-using Thinktecture.IdentityModel.Extensions;
+using Thinktecture.IdentityModel.Client;
 
 namespace Thinktecture.Samples
 {
     class Program
     {
-        static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        //static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        static Uri _baseAddress = new Uri(Constants.WebHostv2BaseAddress);
 
         static void Main(string[] args)
         {
-            var token = RequestToken();
+            var response = RequestToken();
             
-            CallService(token);
+            CallService(response.AccessToken);
             //CallServiceInvalidScope(token);
         }
 
-        private static string RequestToken()
+        private static TokenResponse RequestToken()
         {
             "Requesting token.".ConsoleYellow();
 
@@ -32,13 +27,13 @@ namespace Thinktecture.Samples
                 Constants.Clients.Client,
                 Constants.Clients.ClientSecret);
 
-            var response = client.RequestAccessTokenClientCredentials("read");
+            var response = client.RequestClientCredentialsAsync("read").Result;
 
             Console.WriteLine(" access token");
             response.AccessToken.ConsoleGreen();
             
             Console.WriteLine();
-            return response.AccessToken;
+            return response;
         }
 
         private static void CallService(string token)
@@ -88,21 +83,5 @@ namespace Thinktecture.Samples
                 Console.ReadLine();
             }
         }
-    }
-
-    [JsonObject]
-    public class TokenResponse
-    {
-        [JsonProperty(PropertyName = "access_token")]
-        public string AccessToken { get; set; }
-
-        [JsonProperty(PropertyName = "token_type")]
-        public string TokenType { get; set; }
-
-        [JsonProperty(PropertyName = "expires_in")]
-        public int ExpiresIn { get; set; }
-
-        [JsonProperty(PropertyName = "refresh_token")]
-        public string RefreshToken { get; set; }
     }
 }

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Thinktecture.IdentityModel.Clients;
+using Thinktecture.IdentityModel.Client;
 using Thinktecture.Samples;
 
 namespace OAuth2CodeFlow.Controllers
 {
     public class CallbackController : Controller
     {
-        static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        //static Uri _baseAddress = new Uri(Constants.WebHostv1BaseAddress);
+        static Uri _baseAddress = new Uri(Constants.WebHostv2BaseAddress);
 
         public ActionResult Index()
         {
@@ -22,7 +24,7 @@ namespace OAuth2CodeFlow.Controllers
 
         [HttpPost]
         [ActionName("Index")]
-        public ActionResult Postback()
+        public async Task<ActionResult> Postback()
         {
             var client = new OAuth2Client(
                 new Uri(Constants.AS.OAuth2TokenEndpoint),
@@ -31,9 +33,9 @@ namespace OAuth2CodeFlow.Controllers
 
             var code = Request.QueryString["code"];
 
-            var response = client.RequestAccessTokenCode(
+            var response = await client.RequestAuthorizationCodeAsync(
                 code,
-                new Uri(Constants.Clients.CodeClientRedirectUrl));
+                Constants.Clients.CodeClientRedirectUrl);
 
             return View("Postback", response);
         }
@@ -52,29 +54,21 @@ namespace OAuth2CodeFlow.Controllers
             var response = client.GetAsync("identity").Result;
             response.EnsureSuccessStatusCode();
 
-            var claims = response.Content.ReadAsAsync<IEnumerable<ViewClaim>>().Result;
+            var claims = response.Content.ReadAsAsync<IEnumerable<Models.ViewClaim>>().Result;
 
             return View("Claims", claims);
         }
 
         [HttpPost]
-        public ActionResult RenewToken(string refreshToken)
+        public async Task<ActionResult> RenewToken(string refreshToken)
         {
             var client = new OAuth2Client(
                 new Uri(Constants.AS.OAuth2TokenEndpoint),
                 Constants.Clients.CodeClient,
                 Constants.Clients.CodeClientSecret);
-            var response = client.RequestAccessTokenRefreshToken(refreshToken);
+
+            var response = await client.RequestRefreshTokenAsync(refreshToken);
             return View("Postback", response);
         }
     }
-
-
-
-    public class ViewClaim
-    {
-        public string Type { get; set; }
-        public string Value { get; set; }
-    }
-
 }
