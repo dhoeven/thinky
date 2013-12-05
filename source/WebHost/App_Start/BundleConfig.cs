@@ -9,6 +9,7 @@ namespace Thinktecture.AuthorizationServer.WebHost
 {
     public class BundleConfig
     {
+
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
@@ -28,6 +29,7 @@ namespace Thinktecture.AuthorizationServer.WebHost
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.cosmo.css",
                 "~/Content/site.css"));
+
             bundles.Add(new StyleBundle("~/Content/responsive").Include(
                 "~/Content/bootstrap-responsive.css"));
         }
