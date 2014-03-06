@@ -7,30 +7,35 @@
 }
 
 .container {
+    margin-top: 2em;
+    max-width: 940px;
+    width: auto;
+}
+
+.permission-container {
   margin: 4em auto;
-  max-width: 960px;
-  width: auto;
+  max-width: 550px;
+  width: 90%;
   overflow: hidden;
 }
 
-.container h1,
+.permission-container h1,
 h2 {
-  color: #754c82;
   margin: 0;
 }
 
-.container h1 {
+.permission-container h1 {
   font-size: 1.8em;
   font-weight: 600;
   line-height: 1.1em;
   margin-bottom: 0.5em;
 }
 
-.container h2 { font-size: 1.3em; }
-.container p { font-size: 1em; }
+.permission-container h2 { font-size: 1.3em; }
+.permission-container p { font-size: 1em; }
 .add-margin { margin-bottom: 1em; }
 
-.container p {
+.permission-container p {
   margin-top: 0;
   margin-bottom: 1em;
 }
@@ -64,6 +69,7 @@ form {
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
     border-radius: 3px;
+    margin-top: 2em;
     padding: 1.5em;
 }
 
@@ -102,13 +108,13 @@ fieldset h2 {
 }
 
 .button.primary {
-    background-color: #754c82;
-    border: 1px solid #583962;
+    background-color: #67ad84;
+    border: 1px solid #5ca77b;
     color: #fff;
 }
 
 .button.primary:hover {
-    background-color: #623f6d;
+    background-color: #5ca77b;
 }
 
 label {
@@ -119,8 +125,9 @@ label {
     color: #888;
 }
 
-label.capitalize { 
-    color: #555;
+.scope-list { padding: 0; }
+
+.capitalize { 
     text-transform: capitalize; 
 }
 
@@ -158,23 +165,41 @@ select {
     width: 100%;
 }
 
-.icon-logo {
-  background-repeat: no-repeat;
-  background-image: url("../../content/images/icon-logo.svg");
-  background-position: center center;
-  display: block;
-  margin: 0 auto;
-  height: 100px;
-  width: 240px;
-  margin: 0 0 1em 0;
+.app-icon {
+    background: #999;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
+    margin-right: 1em;
+}
+
+.app-name { 
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
 }
 
 @media screen and (max-width: 640px) {
+
+  .permission-container { margin: 0 auto; }
   .column.half { width: 100%; }
 
   .button { 
       display: block;
       margin-bottom: 1em;
       width: 100%;
+  }
+
+  .app-icon, .app-name {
+      display: block; 
+      text-align: center; 
+  }
+  .app-icon { 
+    margin: 0 auto 1em auto; 
   }
 }
