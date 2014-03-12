@@ -46,6 +46,8 @@
                         }
                         <li class="capitalize">
                             <strong>@scope.DisplayName</strong>
+                            <input type="checkbox" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
+                            @scope.DisplayName
                             @scope.Description
                             @if (scope.Emphasize)
                             {

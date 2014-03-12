@@ -115,12 +115,15 @@ label {
   color: #888;
 }
 .scope-list {
+  list-style: none;
+  margin-left: 0;
   padding: 0;
 }
 .capitalize {
   text-transform: capitalize;
 }
 input[type="checkbox"] {
+  margin-right: 0.3em;
   float: left;
 }
 input:not([type]),
