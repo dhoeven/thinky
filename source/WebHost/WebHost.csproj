@@ -381,7 +381,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Local Release.pubxml" />
-    <None Include="Properties\PublishProfiles\Releae-Production.pubxml" />
+    <None Include="Properties\PublishProfiles\Release-Production.pubxml" />
     <None Include="Properties\PublishProfiles\TestServer.pubxml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
@@ -395,6 +395,7 @@
     <Content Include="Scripts\jquery-2.0.2.min.map" />
     <None Include="Web.Release-Production.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
