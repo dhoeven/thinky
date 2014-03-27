@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Web.Mvc;
 using Thinktecture.AuthorizationServer.Interfaces;
 using Thinktecture.AuthorizationServer.Models;
-using Thinktecture.IdentityModel.Web.Mvc;
+using Thinktecture.IdentityModel.SystemWeb.Mvc;
 
 namespace Thinktecture.AuthorizationServer.OAuth2
 {
@@ -21,12 +21,14 @@ namespace Thinktecture.AuthorizationServer.OAuth2
         IStoredGrantManager _handleManager;
         IAuthorizationServerConfiguration _config;
         ISmiIdentity _identityConfig;
+        private TokenService _tokenService;
 
-        public AuthorizeController(IStoredGrantManager handleManager, IAuthorizationServerConfiguration config, ISmiIdentity identityConfig)
+        public AuthorizeController(IStoredGrantManager handleManager, IAuthorizationServerConfiguration config, TokenService tokenService, ISmiIdentity identityConfig)
         {
             _handleManager = handleManager;
             _config = config;
             _identityConfig = identityConfig;
+            _tokenService = tokenService;
         }
 
         // GET /{appName}/oauth/authorize
@@ -80,6 +82,10 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
 
             Tracing.Verbose("No consent configured for application/client");
+
+            
+            // workaround for bug #139
+            validatedRequest.RequestedRefreshTokenExpiration = DateTime.UtcNow.AddYears(50);
             return PerformGrant(validatedRequest);
         }
 
@@ -225,8 +231,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
         {
             Tracing.Information("Performing implict grant");
 
-            var sts = new TokenService(this._config.GlobalConfiguration);
-            var response = sts.CreateTokenResponse(validatedRequest, ClaimsPrincipal.Current);
+            var response = _tokenService.CreateTokenResponse(validatedRequest, ClaimsPrincipal.Current);
 
             var tokenString = string.Format("access_token={0}&token_type={1}&expires_in={2}",
                     response.AccessToken,

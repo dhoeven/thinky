@@ -60,6 +60,14 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 validatedRequest.GrantType = request.Grant_Type;
                 Tracing.Information("Grant type: " + validatedRequest.GrantType);
             }
+            else if (!string.IsNullOrWhiteSpace(request.Assertion))
+            {
+                validatedRequest.GrantType = OAuthConstants.GrantTypes.Assertion;
+                validatedRequest.AssertionType = request.Grant_Type;
+                validatedRequest.Assertion = request.Assertion;
+                
+                Tracing.Information("Grant type: " + validatedRequest.GrantType);
+            }
             else
             {
                 throw new TokenRequestValidationException(
@@ -81,7 +89,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 validatedRequest.Client.Name,
                 validatedRequest.Client.ClientId);
 
-            switch (request.Grant_Type)
+            switch (validatedRequest.GrantType)
             {
                 case OAuthConstants.GrantTypes.AuthorizationCode:
                     ValidateCodeGrant(validatedRequest, request);
@@ -94,6 +102,9 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                     break;
                 case OAuthConstants.GrantTypes.ClientCredentials:
                     ValidateClientCredentialsGrant(validatedRequest, request);
+                    break;
+                case OAuthConstants.GrantTypes.Assertion:
+                    ValidateAssertionGrant(validatedRequest, request);
                     break;
                 default:
                     throw new TokenRequestValidationException(
@@ -206,33 +217,6 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
         }
 
-        private static void ValidateScopes(ValidatedRequest validatedRequest, TokenRequest request)
-        {
-            // validate scope
-            if (string.IsNullOrWhiteSpace(request.Scope))
-            {
-                throw new TokenRequestValidationException(
-                    "Missing scope",
-                    OAuthConstants.Errors.InvalidScope);
-            }
-
-            // make sure client is allowed to request all scope
-            var requestedScopes = request.Scope.Split(' ').ToList();
-            List<Scope> resultingScopes;
-
-            if (validatedRequest.Application.Scopes.TryValidateScopes(validatedRequest.Client.ClientId, requestedScopes, out resultingScopes))
-            {
-                validatedRequest.Scopes = resultingScopes;
-                Tracing.InformationFormat("Requested scopes: {0}", request.Scope);
-            }
-            else
-            {
-                throw new TokenRequestValidationException(
-                    "Invalid scope",
-                    OAuthConstants.Errors.InvalidScope);
-            }
-        }
-
         private void ValidateCodeGrant(ValidatedRequest validatedRequest, TokenRequest request)
         {
             if (_handleManager == null)
@@ -295,6 +279,45 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
         }
 
+        private void ValidateAssertionGrant(ValidatedRequest validatedRequest, TokenRequest request)
+        {
+            ValidateScopes(validatedRequest, request);
+
+            if (validatedRequest.Client.Flow != OAuthFlow.Assertion)
+            {
+                throw new TokenRequestValidationException(
+                    "Assertion flow not allowed for client",
+                    OAuthConstants.Errors.UnauthorizedClient);
+            }
+        }
+
+        private static void ValidateScopes(ValidatedRequest validatedRequest, TokenRequest request)
+        {
+            // validate scope
+            if (string.IsNullOrWhiteSpace(request.Scope))
+            {
+                throw new TokenRequestValidationException(
+                    "Missing scope",
+                    OAuthConstants.Errors.InvalidScope);
+            }
+
+            // make sure client is allowed to request all scope
+            var requestedScopes = request.Scope.Split(' ').ToList();
+            List<Scope> resultingScopes;
+
+            if (validatedRequest.Application.Scopes.TryValidateScopes(validatedRequest.Client.ClientId, requestedScopes, out resultingScopes))
+            {
+                validatedRequest.Scopes = resultingScopes;
+                Tracing.InformationFormat("Requested scopes: {0}", request.Scope);
+            }
+            else
+            {
+                throw new TokenRequestValidationException(
+                    "Invalid scope",
+                    OAuthConstants.Errors.InvalidScope);
+            }
+        }
+
         private Client ValidateClient(ClaimsPrincipal clientPrincipal, Application application)
         {
             if (clientPrincipal == null || !clientPrincipal.Identity.IsAuthenticated)
@@ -303,7 +326,14 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 return null;
             }
 
-            var passwordClaim = clientPrincipal.FindFirst("password");
+            var clientIdClaim = clientPrincipal.FindFirst("client_id");
+            if (clientIdClaim == null)
+            {
+                Tracing.Error("No client_id provided.");
+                return null;
+            }
+
+            var passwordClaim = clientPrincipal.FindFirst("secret");
             if (passwordClaim == null)
             {
                 Tracing.Error("No client secret provided.");
@@ -311,7 +341,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
             }
 
             return application.Clients.ValidateClient(
-                clientPrincipal.Identity.Name,
+                clientIdClaim.Value,
                 passwordClaim.Value);
         }
     }

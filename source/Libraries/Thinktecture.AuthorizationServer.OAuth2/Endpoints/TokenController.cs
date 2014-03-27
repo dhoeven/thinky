@@ -13,23 +13,30 @@ using Thinktecture.AuthorizationServer.Models;
 
 namespace Thinktecture.AuthorizationServer.OAuth2
 {
+    [ClientCredentialsFilter]
     public class TokenController : ApiController
     {
         IResourceOwnerCredentialValidation _rocv;
         IAuthorizationServerConfiguration _config;
         IStoredGrantManager _handleManager;
+        IAssertionGrantValidation _assertionGrantValidator;
+        private TokenService _tokenService;
 
         public TokenController(
             IResourceOwnerCredentialValidation rocv, 
             IAuthorizationServerConfiguration config,
-            IStoredGrantManager handleManager)
+            IStoredGrantManager handleManager,
+            IAssertionGrantValidation assertionGrantValidator,
+            TokenService tokenService)
         {
             _rocv = rocv;
             _config = config;
             _handleManager = handleManager;
+            _assertionGrantValidator = assertionGrantValidator;
+            _tokenService = tokenService;
         }
 
-        public HttpResponseMessage Post(string appName, TokenRequest request)
+        public HttpResponseMessage Post([FromUri] string appName, [FromBody] TokenRequest request)
         {
             Tracing.Start("OAuth2 Token Endpoint");
 
@@ -53,34 +60,54 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 return Request.CreateOAuthErrorResponse(ex.OAuthError);
             }
 
-            // switch over the grant type
-            if (validatedRequest.GrantType.Equals(OAuthConstants.GrantTypes.Password))
+            switch (validatedRequest.GrantType)
             {
-                return ProcessResourceOwnerCredentialRequest(validatedRequest);
-            }
-            else if (validatedRequest.GrantType.Equals(OAuthConstants.GrantTypes.AuthorizationCode))
-            {
-                return ProcessAuthorizationCodeRequest(validatedRequest);
-            }
-            else if (string.Equals(validatedRequest.GrantType, OAuthConstants.GrantTypes.RefreshToken))
-            {
-                return ProcessRefreshTokenRequest(validatedRequest);
-            }
-            else if (string.Equals(validatedRequest.GrantType, OAuthConstants.GrantTypes.ClientCredentials))
-            {
-                return ProcessClientCredentialsRequest(validatedRequest);
+                case OAuthConstants.GrantTypes.Password:
+                    return ProcessResourceOwnerCredentialRequest(validatedRequest);
+                case OAuthConstants.GrantTypes.AuthorizationCode:
+                    return ProcessAuthorizationCodeRequest(validatedRequest);
+                case OAuthConstants.GrantTypes.RefreshToken:
+                    return ProcessRefreshTokenRequest(validatedRequest);
+                case OAuthConstants.GrantTypes.ClientCredentials:
+                    return ProcessClientCredentialsRequest(validatedRequest);
+                case OAuthConstants.GrantTypes.Assertion:
+                    return ProcessAssertionGrant(validatedRequest);
             }
 
             Tracing.Error("invalid grant type: " + request.Grant_Type);
             return Request.CreateOAuthErrorResponse(OAuthConstants.Errors.UnsupportedGrantType);
         }
 
+        private HttpResponseMessage ProcessAssertionGrant(ValidatedRequest validatedRequest)
+        {
+            ClaimsPrincipal principal;
+
+            try
+            {
+                Tracing.Information("Calling assertion grant handler for assertion: " + validatedRequest.Assertion);
+                principal = _assertionGrantValidator.ValidateAssertion(validatedRequest);
+            }
+            catch (Exception ex)
+            {
+                Tracing.Error("Unhandled exception in assertion grant handler: " + ex.ToString());
+                throw;
+            }
+
+            if (principal == null)
+            {
+                Tracing.Error("Assertion grant handler failed to validate assertion");
+                return Request.CreateOAuthErrorResponse(OAuthConstants.Errors.InvalidGrant);
+            }
+
+            var response = _tokenService.CreateTokenResponse(validatedRequest, principal);
+            return Request.CreateTokenResponse(response);
+        }
+
         private HttpResponseMessage ProcessClientCredentialsRequest(ValidatedRequest validatedRequest)
         {
             Tracing.Information("Processing refresh token request");
 
-            var sts = new TokenService(_config.GlobalConfiguration);
-            var response = sts.CreateTokenResponse(validatedRequest);
+            var response = _tokenService.CreateTokenResponse(validatedRequest);
             return Request.CreateTokenResponse(response);
         }
 
@@ -88,9 +115,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
         {
             Tracing.Information("Processing refresh token request");
 
-            var tokenService = new TokenService(_config.GlobalConfiguration);
-            var response = tokenService.CreateTokenResponse(validatedRequest.StoredGrant, _handleManager);
-
+            var response = _tokenService.CreateTokenResponse(validatedRequest.StoredGrant, _handleManager);
             return Request.CreateTokenResponse(response);
         }
 
@@ -98,9 +123,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
         {
             Tracing.Information("Processing authorization code request");
 
-            var tokenService = new TokenService(_config.GlobalConfiguration);
-            var response = tokenService.CreateTokenResponse(validatedRequest.StoredGrant, _handleManager);
-
+            var response = _tokenService.CreateTokenResponse(validatedRequest.StoredGrant, _handleManager);
             return Request.CreateTokenResponse(response);
         }
 

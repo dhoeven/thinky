@@ -23,10 +23,10 @@ namespace Thinktecture.AuthorizationServer.WebHost
         {
             var builder = new ContainerBuilder();
 
-            //builder.RegisterType<DummyTokenHandleManager>().As<ITokenHandleManager>();
             builder.RegisterType<EFStoredGrantManager>().As<IStoredGrantManager>();
-            
-            //builder.RegisterType<DummyAuthorizationServerConfiguration>().As<IAuthorizationServerConfiguration>();
+
+            builder.RegisterType<DefaultAssertionGrantValidator>().As<IAssertionGrantValidation>();
+
             builder.RegisterType<EFAuthorizationServerConfiguration>().As<IAuthorizationServerConfiguration>();
             builder.RegisterType<EFAuthorizationServerAdministration>().As<IAuthorizationServerAdministration>();
             builder.RegisterType<EFAuthorizationServerAdministratorsService>().As<IAuthorizationServerAdministratorsService>();
@@ -34,6 +34,8 @@ namespace Thinktecture.AuthorizationServer.WebHost
             builder.RegisterType<SmiContext>().InstancePerHttpRequest();
             builder.RegisterType<SmiIdentity>().As<ISmiIdentity>();
             Database.SetInitializer<SmiContext>(null);
+
+            builder.RegisterType<TokenService>().AsSelf();
             
             builder.RegisterModule(new ConfigurationSettingsReader("autofac"));
 
