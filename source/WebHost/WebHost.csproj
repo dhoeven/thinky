@@ -304,13 +304,22 @@
     <Content Include="Areas\UserApplications\Content\UserApplications.less" />
     <Content Include="Areas\UserApplications\Views\Shared\Nav.cshtml" />
     <Content Include="Areas\Admin\Views\Key\X509Key.cshtml" />
-    <Content Include="Configuration\autofac-prod.config">
+    <Content Include="Configuration\autofac-sandbox.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Configuration\identityModel-prod.config">
+    <Content Include="Configuration\identityModel-sandbox.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Configuration\identityModel.services-prod.config">
+    <Content Include="Configuration\identityModel.services-sandbox.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\autofac-release.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\identityModel-release.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configuration\identityModel.services-release.config">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Content\Site.less" />
