@@ -233,6 +233,9 @@
     <Compile Include="Areas\InitialConfiguration\TestData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\dataProtectionKeys.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Areas\Admin\Content\Admin.less" />
     <Content Include="App_Data\dummy.txt" />
     <Content Include="Areas\Admin\Content\Admin.css">
