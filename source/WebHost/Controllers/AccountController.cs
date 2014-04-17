@@ -3,6 +3,8 @@
  * see license.txt
  */
 
+using System;
+using System.Configuration;
 using System.IdentityModel.Services;
 using System.Web.Mvc;
 
@@ -11,11 +13,19 @@ namespace Thinktecture.AuthorizationServer.WebHost.Controllers
     public class AccountController : Controller
     {
         [AllowAnonymous]
-        public ActionResult SignOut()
+        public ActionResult SignOut(string redirectUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
-                FederatedAuthentication.WSFederationAuthenticationModule.SignOut();
+                if (!String.IsNullOrEmpty(redirectUrl))
+                {
+                    FederatedAuthentication.WSFederationAuthenticationModule.SignOut(
+                        String.Format("{0}?redirectUrl={1}", ConfigurationManager.AppSettings["IDServerLogoutURL"], redirectUrl));
+                }
+                else
+                {
+                    FederatedAuthentication.WSFederationAuthenticationModule.SignOut();
+                }
             }
             return View();
         }
