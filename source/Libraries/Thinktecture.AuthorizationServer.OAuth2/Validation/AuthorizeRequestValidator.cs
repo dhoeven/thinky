@@ -252,14 +252,13 @@ namespace Thinktecture.AuthorizationServer.OAuth2
 
         private static List<Scope> ValidateScopesForContext(IdentityMembership membership, List<Scope> resultingScopes)
         {
-            if (membership == null || !membership.CanAccessNeeds)
-            {
-                RemoveScope(resultingScopes, "needs");
-            }
-            if (membership == null || !membership.CanAccessMembership)
-            {
-                RemoveScope(resultingScopes, "membership");
-            }
+            if (membership == null) return resultingScopes;
+
+            if (!membership.CanAccessNeeds) RemoveScope(resultingScopes, "needs");
+            if (!membership.CanAccessMembership) RemoveScope(resultingScopes, "membership");
+            if (!membership.CanAccessSentShares) RemoveScope(resultingScopes, "sent_shares");
+            if (!membership.CanAccessReceivedShares) RemoveScope(resultingScopes, "received_shares");
+            
             return resultingScopes;
         }
 
