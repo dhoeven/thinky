@@ -10,7 +10,7 @@
     <projectUrl>http://samaritanministries.org</projectUrl>
   </metadata>
   <files>
-    <file src="App_Data\*.*" target="Views" />
+    <file src="App_Data\*.*" target="App_Data" />
     <file src="Areas\**\*.*" target="Areas" />
     <file src="bin\**\*.*" target="bin" />
     <file src="Configuration\**\*.*" target="Configuration" />
