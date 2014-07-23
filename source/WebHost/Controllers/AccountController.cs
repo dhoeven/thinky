@@ -27,6 +27,11 @@ namespace Thinktecture.AuthorizationServer.WebHost.Controllers
                     FederatedAuthentication.WSFederationAuthenticationModule.SignOut();
                 }
             }
+            else // follow the redirect even if user is not authenticated
+            {
+                if (!string.IsNullOrEmpty(redirectUrl))
+                    return Redirect(redirectUrl);
+            }
             return View();
         }
 

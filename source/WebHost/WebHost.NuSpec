@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>AuthorizationServer</id>
+    <title>AuthorizationServer</title>
+    <version>$version$</version>
+    <authors>Samaritan Ministries</authors>
+    <description>AuthorizationServer</description>
+    <licenseUrl>http://samaritanministries.org</licenseUrl>
+    <projectUrl>http://samaritanministries.org</projectUrl>
+  </metadata>
+  <files>
+    <file src="App_Data\*.*" target="App_Data" />
+    <file src="Areas\**\*.*" target="Areas" />
+    <file src="bin\**\*.*" target="bin" />
+    <file src="Configuration\**\*.*" target="Configuration" />
+    <file src="Content\**\*.*" target="Content" />
+    <file src="Scripts\**\*.*" target="Scripts" />
+    <file src="Views\**\*.*" target="Views" />
+    <file src="*.config" target="" />
+    <file src="Global.asax" target="" />  
+  </files>
+</package>
