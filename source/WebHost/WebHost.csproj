@@ -276,12 +276,7 @@
     <Content Include="Content\images\icon-logo.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Site.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
+    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
@@ -335,7 +330,6 @@
     <Content Include="Configuration\identityModel.services-qa.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Content\Site.less" />
     <Content Include="Configuration\identityModel.config">
       <SubType>Designer</SubType>
     </Content>
