@@ -6,12 +6,13 @@
 }
 
 <div class="permission-container">
-
-<span class="app-icon"></span>
-<span class="app-name"><strong>@Model.Client.Name</strong><br /> wants permission to access your information.</span>
-
 <div class="box">
-        <p>The following permissions will be allowed:</p>
+    <div class="app-container">
+        <div class="app-icon"></div>
+        <div class="app-name"><strong>@Model.Client.Name</strong><p class="app-description"> wants permission to access your information.</p></div>
+    </div>
+    <h1 class="app-access">@Model.Client.Name would like to access:</h1>
+
         @if (!this.ViewData.ModelState.IsValid)
         {
             var errors =
@@ -31,32 +32,29 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <dl>
-                @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
-                {
-                    <ul class="scope-list">
+                <ul>
+                    @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
+                    {
                         @helper GetCheckedForScope(string val)
-{
-    var scopes = Request["scopes"];
-    if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
-        (scopes != null && scopes.Contains(val)))
-    {
+                        {
+                            var scopes = Request["scopes"];
+                            if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
+                                (scopes != null && scopes.Contains(val)))
+                            {
                             @: checked
-                                        }
+                            }
                         }
-                        <li class="capitalize">
-                            <strong>@scope.DisplayName</strong>
-                            <input type="checkbox" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
-                            @scope.DisplayName
-                            @scope.Description
-                            @if (scope.Emphasize)
+                        <li class="scope-list">
+                            <input type="hidden" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
+                            @*@if (scope.Emphasize)
                             {
                                 <i class="icon-exclamation-sign"></i>
-                            }
+                            }*@
+                            <p class="access-text">@scope.DisplayName</p>
+                            <p class="description">@scope.Description</p>
                         </li>
-                    </ul>
                 }
-            </dl>
+               </ul>
             
                 if (Model.RequestingRefreshToken)
                 {
@@ -87,19 +85,26 @@
                 }
                 else if (Model.ShowRememberConsent)
                 {
+
+           <hr/>
+
+            <h2 class="app-access">@Model.Client.Name will not be able to access:</h2>
+                    <ul>
+                        <li class="list">Your Samaritan ID password</li>
+                    </ul>
+            
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="rememberDuration" value="-1" checked="@Request["rememberDuration"]" />
-                    Remember decision
+                    Don't ask me again.
                 </label>
             </div>
                 }
             <div class="buttons">
                 <button class="button primary" name="button" value="yes">Allow</button>
-                <button class="button" name="button" value="no">Deny</button>
+                <button class="button secondary" name="button" value="no">Don't allow</button>
             </div>
 
         }
     </div>
-</div>
 </div>
