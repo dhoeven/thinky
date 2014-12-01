@@ -1,4 +1,4 @@
-/* Styles
+﻿/* Styles
 -----------------------------------------------------------*/
 *,
 *:before,
@@ -7,22 +7,22 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 body {
   font-weight: 400;
-  font: "Source Sans Pro",sans-serif;
+  font: "Source Sans Pro", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-
 strong {
-   font-weight: 600;
+  font-weight: 600;
 }
 .container {
   margin-top: 2em;
   max-width: 940px;
   width: auto;
 }
-h1,h2,h3 {
+h1,
+h2,
+h3 {
   color: #555;
   font-weight: 600;
 }
@@ -32,7 +32,6 @@ h1,h2,h3 {
   border-radius: 5px;
   padding: 1rem;
 }
-
 .permission-container {
   margin: 4em auto;
   max-width: 450px;
@@ -59,18 +58,16 @@ h2 {
   margin-bottom: 1em;
 }
 p {
-    font-size: 1rem;
-    font-weight: 400;
-    margin: 0;
-    padding: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
 }
 p.description {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5rem;
-
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
 }
-
 .column {
   padding: 0.5em 0;
   width: 100%;
@@ -99,7 +96,6 @@ form {
   margin-top: 2rem;
   padding: 1.5em;
 }
-
 fieldset h2 {
   text-align: center;
 }
@@ -127,22 +123,21 @@ fieldset h2 {
   margin: 0 5px;
 }
 .button.primary {
-    background-color: #60BF85;
-    border: 1px solid #60BF85;
-    color: #fff;
+  background-color: #60BF85;
+  border: 1px solid #60BF85;
+  color: #fff;
 }
 .button.primary:hover {
   background-color: #5ca77b;
 }
 .button.secondary {
-    background-color: #F7F7F8;
-    border: 1px #ddd solid;
-    color: #747475;
+  background-color: #F7F7F8;
+  border: 1px #ddd solid;
+  color: #747475;
 }
 .button.secondary:hover {
   background: #e8e8e8;
 }
-
 label {
   font-size: 0.9em;
   display: block;
@@ -191,14 +186,14 @@ select {
   width: 100%;
 }
 .app-icon {
-    background-image: url('images/apps.svg');
-    background-position: 0 0;
-    background-size: 700px; 
-    border-radius: 15px; 
-    height: 70px; 
-    width: 70px;
-    margin: 0 10px 0 0;
-    float: left;
+  background-image: url('images/apps.svg');
+  background-position: 0 0;
+  background-size: 700px;
+  border-radius: 15px;
+  height: 70px;
+  width: 70px;
+  margin: 0 10px 0 0;
+  float: left;
 }
 .app-name {
   display: inline-block;
@@ -228,38 +223,32 @@ select {
     margin: 0 auto 1em auto;
   }
   .app-name {
-      width: 100%;
+    width: 100%;
   }
 }
-
 .access-text {
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.8rem;
 }
-
 ul {
   padding: 0;
   margin: 1rem 0;
-
 }
 ul.no-margin {
-    margin: 0;
-  }
-
+  margin: 0;
+}
 li {
   line-height: 1rem;
   font-size: 1rem;
   font-weight: 400;
 }
-
 li.scope-list {
-list-style: none;
-margin: 0 0 0.5rem 1rem;
-padding: 0;
+  list-style: none;
+  margin: 0 0 0.5rem 1rem;
+  padding: 0;
 }
-
 li.list {
-margin: 0 0 0.7rem 1.2rem;
+  margin: 0 0 0.7rem 1.2rem;
 }
-
+/*# sourceMappingURL=Site.css.map */
