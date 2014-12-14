@@ -42,14 +42,15 @@ $(function () {
         });
 
         vm.rememberConsentDecisionEnabled = ko.computed(function () {
-            return vm.requireConsent();
+            //return vm.requireConsent();
+            return true;
         });
 
         vm.save = function () {
             var data = ko.mapping.toJS(vm);
-            if (!data.requireConsent) {
-                data.rememberConsentDecision = false;
-            }
+            //if (!data.requireConsent) {
+            //    data.rememberConsentDecision = false;
+            //}
             if (vm.isNew()) {
                 svc.post(data).then(function (data, status, xhr) {
                     window.location = window.location + '#' + data.id;

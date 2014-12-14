@@ -44,7 +44,7 @@
     </div>
     <div>
         <label for="tokenLifetime">Token Lifetime (minutes)</label>
-        <input id="tokenLifetime" data-bind="value: tokenLifetime, valueUpdate: 'keyup'" type="number" min="0" />
+        <input id="tokenLifetime" data-bind="value: tokenLifetime, valueUpdate: 'keyup'" type="text" min="0" />
     </div>
     <div>
         <label for="allowRefreshToken" class="checkbox">
@@ -58,9 +58,9 @@
             Require Consent
         </label>
     </div>
-    <div class="indent">
+    <div>
         <label for="rememberConsentDecision" class="checkbox">
-            <input id="rememberConsentDecision" data-bind="checked: rememberConsentDecision, enable: rememberConsentDecisionEnabled" type="checkbox" />
+            <input id="rememberConsentDecision" data-bind="checked: rememberConsentDecision" type="checkbox" />
             Allow Remember Consent Decision
         </label>
     </div>

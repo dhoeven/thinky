@@ -236,6 +236,9 @@
     <Content Include="App_Data\dataProtectionKeys.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\Admin\Content\Admin.css.map">
+      <DependentUpon>Admin.css</DependentUpon>
+    </Content>
     <None Include="Areas\Admin\Content\Admin.less" />
     <Content Include="App_Data\dummy.txt" />
     <Content Include="Areas\Admin\Content\Admin.css">
@@ -270,6 +273,7 @@
     <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\apps.svg" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\icon-logo.svg">
@@ -279,7 +283,7 @@
       <DependentUpon>Site.less</DependentUpon>
     </Content>
     <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.less</DependentUpon>
+      <DependentUpon>Site.css</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
@@ -334,7 +338,6 @@
     <Content Include="Configuration\identityModel.services-qa.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Content\Site.less" />
     <Content Include="Configuration\identityModel.config">
       <SubType>Designer</SubType>
     </Content>
@@ -351,6 +354,13 @@
     <Content Include="Scripts\app\as.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\Site.less" />
+    <Content Include="Content\Site.css.map">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="Areas\UserApplications\Content\UserApplications.css.map">
+      <DependentUpon>UserApplications.css</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Local Release.pubxml" />
     <None Include="Properties\PublishProfiles\Release-Production.pubxml" />
     <None Include="Properties\PublishProfiles\TestServer.pubxml" />
@@ -424,8 +434,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\InitialConfiguration\Views\Shared\" />
-    <Folder Include="Content\themes\base\images\" />
-    <Folder Include="Content\themes\base\minified\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
