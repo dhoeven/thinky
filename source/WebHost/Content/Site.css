@@ -281,4 +281,10 @@ li.scope-list {
 li.list {
   margin: 0 0 0.7rem 1.2rem;
 }
+.clearfix:after,
+.clearfix:before {
+  clear: both;
+  overflow: auto;
+  zoom: 1;
+}
 /*# sourceMappingURL=Site.css.map */

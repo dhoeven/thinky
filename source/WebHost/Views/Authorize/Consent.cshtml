@@ -32,7 +32,7 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-    <ul>
+    <ul class="clearfix">
         @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
         {
             @helper GetCheckedForScope(string val)
