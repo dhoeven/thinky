@@ -8,7 +8,7 @@
 <div class="permission-container">
 <div class="box">
     <div class="app-container">
-        <div class="app-icon"></div>
+        <div class="app-icon @Model.Client.ClientId"></div>
         <div class="app-name"><strong>@Model.Client.Name</strong><p class="app-description"> wants permission to access your information.</p></div>
     </div>
     <h1 class="app-access">@Model.Client.Name would like to access:</h1>
@@ -32,32 +32,34 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-                <ul>
-                    @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
-                    {
-                        @helper GetCheckedForScope(string val)
-                        {
-                            var scopes = Request["scopes"];
-                            if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
-                                (scopes != null && scopes.Contains(val)))
-                            {
-                            @: checked
-                            }
-                        }
-                        <li class="scope-list">
-                            <input type="hidden" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
-                            @*@if (scope.Emphasize)
-                            {
-                                <i class="icon-exclamation-sign"></i>
-                            }*@
-                            <p class="access-text">@scope.DisplayName</p>
-                            <p class="description">@scope.Description</p>
-                        </li>
-                }
-               </ul>
-            
-                if (Model.RequestingRefreshToken)
+    <ul>
+        @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
+        {
+            @helper GetCheckedForScope(string val)
+            {
+                var scopes = Request["scopes"];
+                if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
+                    (scopes != null && scopes.Contains(val)))
                 {
+                    @: checked
+                }
+            }
+            <li class="scope-list">
+                <input type="hidden" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
+
+                <div class="app-icon @scope.Name"></div>
+                @*@if (scope.Emphasize)
+                    {
+                        <i class="icon-exclamation-sign"></i>
+                    }*@
+                <p class="access-text">@scope.DisplayName</p>
+                <p class="description">@scope.Description</p>
+            </li>
+        }
+    </ul>
+
+            if (Model.RequestingRefreshToken)
+            {
             <hr>
             <div class="add-margin">
                 <i class="icon-exclamation-sign"></i>
