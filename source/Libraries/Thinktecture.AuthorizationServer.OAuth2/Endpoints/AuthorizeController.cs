@@ -91,7 +91,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
         [ActionName("Index")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleConsentResponse(string appName, string button, string[] scopes, AuthorizeRequest request, int? rememberDuration = null)
+        public ActionResult HandleConsentResponse(string appName, string button, string[] scopes, AuthorizeRequest request, int? rememberDuration = -1)
         {
             Tracing.Start("OAuth2 Authorize Endoint - Consent response");
 
