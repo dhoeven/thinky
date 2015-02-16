@@ -199,7 +199,19 @@ select {
     width: 70px;
     margin: 0 10px 0 0;
     float: left;
+    position: relative;
+    top: -6px;
+    &.identity{ background-position: 0 0; }
+    &.membership { background-position: -210px 0; }
+    &.shares_app {background-position: -280px 0; }
+    &.needs_app { background-position: -350px 0; }
+    &.checklist_app { background-position: 0 -70px; }
+    &.enrollment_app { background-position: -140px -70px; }
+    &.signature_app { background-position: -210px -70px; }
+    &.envision_rx { background-position: 0 -140px; }
+    &.edocs{ background-position: -70px -140px; }
 }
+
 .app-name {
   display: inline-block;
   margin-bottom: 0;
@@ -257,8 +269,15 @@ li.scope-list {
 list-style: none;
 margin: 0 0 0.5rem 1rem;
 padding: 0;
+clear: both;
 }
 
 li.list {
 margin: 0 0 0.7rem 1.2rem;
+}
+
+.clearfix:after, .clearfix:before {
+  clear: both;
+  overflow: auto;
+  zoom: 1;
 }

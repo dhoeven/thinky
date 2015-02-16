@@ -8,7 +8,7 @@
 <div class="permission-container">
 <div class="box">
     <div class="app-container">
-        <div class="app-icon"></div>
+        <div class="app-icon @Model.Client.ClientId"></div>
         <div class="app-name"><strong>@Model.Client.Name</strong><p class="app-description"> wants permission to access your information.</p></div>
     </div>
     <h1 class="app-access">@Model.Client.Name would like to access:</h1>
@@ -32,74 +32,75 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-                <ul>
-                    @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
+    <ul class="clearfix">
+        @foreach (var scope in @Model.Scopes.OrderByDescending(x => x.Emphasize))
+        {
+            @helper GetCheckedForScope(string val)
+            {
+                var scopes = Request["scopes"];
+                if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
+                    (scopes != null && scopes.Contains(val)))
+                {
+                    @: checked
+                }
+            }
+            <li class="scope-list">
+                <input type="hidden" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
+
+                <div class="app-icon @scope.Name"></div>
+                @*@if (scope.Emphasize)
                     {
-                        @helper GetCheckedForScope(string val)
-                        {
-                            var scopes = Request["scopes"];
-                            if ((String.IsNullOrWhiteSpace(scopes) && Request.HttpMethod == "GET") ||
-                                (scopes != null && scopes.Contains(val)))
-                            {
-                            @: checked
-                            }
-                        }
-                        <li class="scope-list">
-                            <input type="hidden" name="scopes" value="@scope.Name" @GetCheckedForScope(@scope.Name) />
-                            @*@if (scope.Emphasize)
-                            {
-                                <i class="icon-exclamation-sign"></i>
-                            }*@
-                            <p class="access-text">@scope.DisplayName</p>
-                            <p class="description">@scope.Description</p>
-                        </li>
-                }
-               </ul>
-            
-                if (Model.RequestingRefreshToken)
-                {
-            <hr>
-            <div class="add-margin">
-                <i class="icon-exclamation-sign"></i>
-                <strong>Offline Use</strong>
-            </div>
-            <p>These permissions will be allowed while you are offline.</p>
+                        <i class="icon-exclamation-sign"></i>
+                    }*@
+                <p class="access-text">@scope.DisplayName</p>
+                <p class="description">@scope.Description</p>
+            </li>
+        }
+    </ul>
+
+            if (Model.RequestingRefreshToken)
+            {
+                <hr>
+                <div class="add-margin">
+                    <i class="icon-exclamation-sign"></i>
+                    <strong>Offline Use</strong>
+                </div>
+                <p>These permissions will be allowed while you are offline.</p>
                 
-            <div>
-                <label for="rememberDuration">Allow offline use for:</label>
-                <select id="rememberDuration" name="rememberDuration">
-                    <option value="1" selected="@("1".Equals(Request["rememberDuration"]))">1 hour</option>
-                    <option value="3" selected="@("3".Equals(Request["rememberDuration"]))">3 hours</option>
-                    <option value="12" selected="@("12".Equals(Request["rememberDuration"]))">12 hours</option>
-                    <option value="24" selected="@("24".Equals(Request["rememberDuration"]))">1 day</option>
-                    <option value="72" selected="@("72".Equals(Request["rememberDuration"]))">3 days</option>
-                    <option value="168" selected="@("168".Equals(Request["rememberDuration"]))">1 week</option>
-                    <option value="336" selected="@("336".Equals(Request["rememberDuration"]))">2 weeks</option>
-                    <option value="720" selected="@("720".Equals(Request["rememberDuration"]))">1 month</option>
-                    <option value="2190" selected="@("2190".Equals(Request["rememberDuration"]))">3 months</option>
-                    <option value="4380" selected="@("4380".Equals(Request["rememberDuration"]))">6 months</option>
-                    <option value="8760" selected="@("8760".Equals(Request["rememberDuration"]))">1 year</option>
-                    <option value="-1" selected="@("-1".Equals(Request["rememberDuration"]))">forever</option>
-                </select>
-            </div>
-                }
-                else if (Model.ShowRememberConsent)
-                {
+                <div>
+                    <label for="rememberDuration">Allow offline use for:</label>
+                    <select id="rememberDuration" name="rememberDuration">
+                        <option value="1" selected="@("1".Equals(Request["rememberDuration"]))">1 hour</option>
+                        <option value="3" selected="@("3".Equals(Request["rememberDuration"]))">3 hours</option>
+                        <option value="12" selected="@("12".Equals(Request["rememberDuration"]))">12 hours</option>
+                        <option value="24" selected="@("24".Equals(Request["rememberDuration"]))">1 day</option>
+                        <option value="72" selected="@("72".Equals(Request["rememberDuration"]))">3 days</option>
+                        <option value="168" selected="@("168".Equals(Request["rememberDuration"]))">1 week</option>
+                        <option value="336" selected="@("336".Equals(Request["rememberDuration"]))">2 weeks</option>
+                        <option value="720" selected="@("720".Equals(Request["rememberDuration"]))">1 month</option>
+                        <option value="2190" selected="@("2190".Equals(Request["rememberDuration"]))">3 months</option>
+                        <option value="4380" selected="@("4380".Equals(Request["rememberDuration"]))">6 months</option>
+                        <option value="8760" selected="@("8760".Equals(Request["rememberDuration"]))">1 year</option>
+                        <option value="-1" selected="@("-1".Equals(Request["rememberDuration"]))">forever</option>
+                    </select>
+                </div>
+            }
+            else if (Model.ShowRememberConsent)
+            {
+                <hr/>
 
-           <hr/>
+                <h2 class="app-access">@Model.Client.Name will not be able to access:</h2>
+                <ul>
+                    <li class="list">Your Samaritan ID password</li>
+                </ul>
 
-            <h2 class="app-access">@Model.Client.Name will not be able to access:</h2>
-                    <ul>
-                        <li class="list">Your Samaritan ID password</li>
-                    </ul>
-            
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="rememberDuration" value="-1" checked="@Request["rememberDuration"]" />
-                    Don't ask me again.
-                </label>
-            </div>
-                }
+                @*<div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="rememberDuration" value="-1" checked="@Request["rememberDuration"]" />
+                        Don't ask me again.
+                    </label>
+                </div>*@
+            }
             <div class="buttons">
                 <button class="button primary" name="button" value="yes">Allow</button>
                 <button class="button secondary" name="button" value="no">Don't allow</button>
