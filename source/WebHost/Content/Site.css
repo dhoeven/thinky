@@ -198,7 +198,8 @@ select {
   top: -6px;
 }
 .app-icon.identity {
-  background-position: 0 0;
+  background-image: url('images/sam-id.svg');
+  background-size: 100%;
 }
 .app-icon.membership {
   background-position: -210px 0;
