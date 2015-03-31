@@ -9,8 +9,8 @@ namespace Thinktecture.AuthorizationServer.WebHost
     {
         protected override void OnEndRequest(object sender, EventArgs args)
         {
-            ConvertToHttpsIfNeeded(sender);
             base.OnEndRequest(sender, args);
+            ConvertToHttpsIfNeeded(sender);
         }
 
 
