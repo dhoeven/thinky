@@ -218,7 +218,7 @@
     <Compile Include="Areas\UserApplications\Controllers\HomeController.cs" />
     <Compile Include="Areas\UserApplications\Models\UserApplicationsViewModel.cs" />
     <Compile Include="Areas\UserApplications\UserApplicationsAreaRegistration.cs" />
-    <Compile Include="CustomSessionAuthenticationModule.cs" />
+    <Compile Include="CustomWsFederationAuthenticationModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Security\AuthorizationManager.cs" />
     <Compile Include="Security\ClaimsTransformerBase.cs" />
