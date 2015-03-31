@@ -5,13 +5,14 @@ using System.Web;
 
 namespace Thinktecture.AuthorizationServer.WebHost
 {
-    public class CustomSessionAuthenticationModule : SessionAuthenticationModule
+    public class CustomWsFederationAuthenticationModule : WSFederationAuthenticationModule
     {
-        protected override void OnAuthenticateRequest(object sender, EventArgs args)
+        protected override void OnEndRequest(object sender, EventArgs args)
         {
-            base.OnAuthenticateRequest(sender, args);
             ConvertToHttpsIfNeeded(sender);
+            base.OnEndRequest(sender, args);
         }
+
 
         private static void ConvertToHttpsIfNeeded(object sender)
         {
