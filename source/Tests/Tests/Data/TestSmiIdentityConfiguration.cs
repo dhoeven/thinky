@@ -27,5 +27,11 @@ namespace Tests.Data
         {
             return ImpersonationId;
         }
+
+
+        public ImpersonationIdentity GetImpersonationById(string identityId)
+        {
+            return new ImpersonationIdentity();
+        }
     }
 }
