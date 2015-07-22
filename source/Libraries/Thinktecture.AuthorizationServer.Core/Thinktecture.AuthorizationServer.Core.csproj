@@ -106,7 +106,10 @@
     <Compile Include="Models\ClientAuthenticationMethod.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Models\GlobalConfiguration.cs" />
+    <Compile Include="Models\Identity.cs" />
     <Compile Include="Models\IdentityMembership.cs" />
+    <Compile Include="Models\ImpersonationIdentity.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SigningKey.cs" />
     <Compile Include="Models\StoredGrant.cs" />
     <Compile Include="Models\OAuth2Flow.cs" />

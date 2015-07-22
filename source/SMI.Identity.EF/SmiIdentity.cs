@@ -21,5 +21,26 @@ namespace SMI.Identity.EF
             return _db.Memberships.Where(
                 m => identityId != null && m.IdentityID == new Guid(identityId)).ToList();
         }
+
+
+        public ImpersonationIdentity GetImpersonationById(string identityId)
+        {
+            var identity = _db.Identity.FirstOrDefault(i => i.IdentityID == new Guid(identityId));
+            if (identity == null || identity.ImpersonationId == null)
+                return null;
+
+            var impersonatedIdentity = _db.Identity.FirstOrDefault(i => i.IdentityID == identity.ImpersonationId);
+            if (impersonatedIdentity == null) return null;
+
+            return new ImpersonationIdentity
+            {
+                impersonationId = identity.ImpersonationId.ToString(),
+                emailAddress = impersonatedIdentity.EmailAddress,
+                emailVerified = impersonatedIdentity.IsApproved,
+                isLockedOut = impersonatedIdentity.IsLockedOut,
+                nickname = impersonatedIdentity.Nickname,
+                roles = impersonatedIdentity.Roles.Select(x => x.RoleName).ToList()
+            };
+        }
     }
 }

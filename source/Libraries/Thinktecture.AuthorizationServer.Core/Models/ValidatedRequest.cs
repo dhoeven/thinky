@@ -30,5 +30,6 @@ namespace Thinktecture.AuthorizationServer.Models
         public bool ShowRememberConsent { get; set; }
         public string context { get; set; }
         public bool HasClaimedMembership;
+        public ImpersonationIdentity Impersonation { get; set; }
     }
 }

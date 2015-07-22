@@ -43,12 +43,16 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 Tracing.Error("Application not found: " + appName);
                 return HttpNotFound();
             }
-            var memberships = _identityConfig.FindIdentityMemberships(ClaimsPrincipal.Current.GetSubject());
+
+            var impersonation = _identityConfig.GetImpersonationById(ClaimsPrincipal.Current.GetSubject());
+
+            var memberships = _identityConfig.FindIdentityMemberships(impersonation == null ? ClaimsPrincipal.Current.GetSubject() : impersonation.impersonationId);
 
             ValidatedRequest validatedRequest;
             try
             {
                 validatedRequest = new AuthorizeRequestValidator().Validate(application, memberships, request);
+                validatedRequest.Impersonation = impersonation;
             }
             catch (AuthorizeRequestValidationException ex)
             {
@@ -102,7 +106,10 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 Tracing.Error("Application not found: " + appName);
                 return HttpNotFound();
             }
-            var memberships = _identityConfig.FindIdentityMemberships(ClaimsPrincipal.Current.GetSubject());
+
+            var impersonation = _identityConfig.GetImpersonationById(ClaimsPrincipal.Current.GetSubject());
+
+            var memberships = _identityConfig.FindIdentityMemberships(impersonation == null ? ClaimsPrincipal.Current.GetSubject() : impersonation.impersonationId);
 
             if (button == "no")
             {
@@ -118,6 +125,7 @@ namespace Thinktecture.AuthorizationServer.OAuth2
                 try
                 {
                     validatedRequest = new AuthorizeRequestValidator().Validate(application, memberships, request);
+                    validatedRequest.Impersonation = impersonation;
                 }
                 catch (AuthorizeRequestValidationException ex)
                 {

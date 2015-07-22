@@ -12,5 +12,6 @@ namespace Thinktecture.AuthorizationServer.EF
     {
         public SmiContext() : base ("SmiContext") { }
         public DbSet<IdentityMembership> Memberships { get; set; }
+        public DbSet<Identity> Identity { get; set; }
     }
 }
