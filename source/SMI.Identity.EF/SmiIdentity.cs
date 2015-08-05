@@ -39,7 +39,7 @@ namespace SMI.Identity.EF
                 emailVerified = impersonatedIdentity.IsApproved,
                 isLockedOut = impersonatedIdentity.IsLockedOut,
                 nickname = impersonatedIdentity.Nickname,
-                roles = impersonatedIdentity.Roles.Select(x => x.RoleName).ToList()
+                roles = impersonatedIdentity.Roles == null ? new List<string>() : impersonatedIdentity.Roles.Select(x => x.RoleName).ToList()
             };
         }
     }
