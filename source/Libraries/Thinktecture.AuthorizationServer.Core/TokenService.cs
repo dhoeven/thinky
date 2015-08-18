@@ -150,7 +150,34 @@ namespace Thinktecture.AuthorizationServer
                 claims.AddRange(CreateResourceOwnerClaims(resourceOwner));
             }
 
+            return request.Impersonation == null ? claims : DoImpersonation(request, claims);
+        }
+
+        private List<Claim> DoImpersonation(ValidatedRequest request, List<Claim> claims)
+        {
+            var sub = claims.First(c => c.Type == "sub");
+            ReplaceClaim("sub", request.Impersonation.impersonationId, claims);
+            ReplaceClaim("email_verified", request.Impersonation.emailVerified.ToString(), claims);
+            ReplaceClaim("nickname", request.Impersonation.nickname, claims);
+            ReplaceClaim("is_locked_out", request.Impersonation.isLockedOut.ToString(), claims);
+            ReplaceClaim("impersonator_id", sub.Value, claims);
+            ReplaceClaim(ClaimTypes.Email, request.Impersonation.emailAddress, claims);
+
+            ReplaceRoles(claims, request.Impersonation.roles);
             return claims;
+        }
+
+        private static void ReplaceRoles(List<Claim> claims, IList<string> roles)
+        {
+            claims.RemoveAll(c=>c.Type == ClaimTypes.Role);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        }
+
+        private void ReplaceClaim(string type, string newValue, List<Claim> claims)
+        {
+            var claim = claims.FirstOrDefault(c => c.Type == type);
+            if (claim != null) claims.Remove(claim);
+            claims.Add(new Claim(type, newValue));
         }
 
         protected virtual IEnumerable<Claim> CreateResourceOwnerClaims(ClaimsPrincipal resourceOwner)
